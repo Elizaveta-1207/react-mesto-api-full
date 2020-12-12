@@ -14,7 +14,9 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUser = (req, res) => {
-  User.findById(req.params._id)
+  // User.findById(req.params._id)
+  console.log(req.user);
+  User.findById(req.user._id)
     .orFail(() => {
       const error = new Error("CastError");
       error.statusCode = 404;
@@ -91,7 +93,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign(
         { _id: user._id },
         // временно!!!
-        "some-secret-key",
+        "super-strong-secret",
         { expiresIn: "7d" }
       );
       //что не так!!?

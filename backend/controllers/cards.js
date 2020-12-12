@@ -28,22 +28,42 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params._id)
-    .orFail(() => {
-      const error = new Error("CastError");
-      error.statusCode = 404;
-      throw error;
-    })
-    .then((card) => res.send(card))
-    .catch((err) => {
-      if (err.name === "CastError") {
-        res
-          .status(404)
-          .send({ message: "Ошибка удаления карточки c таким id" });
-        return;
+  Card.findById(req.params._id)
+    .select("+owner")
+    .then((card) => {
+      if (card.owner.toString() !== req.user._id) {
+        // throw new ForbiddenError("Нельзя удалить чужую карточку!");
+        return Promise.reject(new Error("Нельзя удалить чужую карточку!"));
       }
-      res.status(500).send({ message: "Запрашиваемый ресурс не найден" });
-    });
+    })
+    .then(() => {
+      Card.findByIdAndRemove(req.params._id)
+        .then((card) => {
+          if (!card) {
+            // throw new NotFoundError("Запрашиваемый ресурс не найден");
+            return Promise.reject(new Error("Запрашиваемый ресурс не найден"));
+          }
+          res.send(card);
+        })
+        .catch(next);
+    })
+    .catch(next);
+  // Card.findByIdAndRemove(req.params._id)
+  //   .orFail(() => {
+  //     const error = new Error("CastError");
+  //     error.statusCode = 404;
+  //     throw error;
+  //   })
+  //   .then((card) => res.send(card))
+  //   .catch((err) => {
+  //     if (err.name === "CastError") {
+  //       res
+  //         .status(404)
+  //         .send({ message: "Ошибка удаления карточки c таким id" });
+  //       return;
+  //     }
+  //     res.status(500).send({ message: "Запрашиваемый ресурс не найден" });
+  //   });
 };
 
 module.exports.likeCard = (req, res) => {

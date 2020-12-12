@@ -17,12 +17,12 @@ app.post("/signup", createUser);
 
 app.use(auth);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "5fb7d9f994d7832efcd46d5f",
-  };
-  next();
-});
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: "5fb7d9f994d7832efcd46d5f",
+//   };
+//   next();
+// });
 
 app.use("/cards", cardsRouter);
 app.use("/users", usersRouter);
