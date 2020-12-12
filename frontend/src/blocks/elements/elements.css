@@ -1,0 +1,8 @@
+@import url(./__list/elements__list.css);
+
+.elements {
+  max-width: calc(882px + 36px);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 18px;
+}
