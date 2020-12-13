@@ -10,15 +10,22 @@ const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
 const NotFoundError = require("./errors/NotFoundError");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { errors } = require("celebrate");
+const { errors, celebrate, Joi, CelebrateError } = require("celebrate");
+
+const validateUser = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-app.post("/signin", login);
-app.post("/signup", createUser);
+app.post("/signin", validateUser, login);
+app.post("/signup", validateUser, createUser);
 
 app.use(auth);
 
