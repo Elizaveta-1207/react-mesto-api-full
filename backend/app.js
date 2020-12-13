@@ -9,9 +9,12 @@ const usersRouter = require("./routes/users");
 const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
 const NotFoundError = require("./errors/NotFoundError");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(requestLogger);
 
 app.post("/signin", login);
 app.post("/signup", createUser);
@@ -31,6 +34,9 @@ app.use("/*", (req, res) => {
   // res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
   throw new NotFoundError("Запрашиваемый ресурс не найден");
 });
+
+app.use(errorLogger);
+app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
