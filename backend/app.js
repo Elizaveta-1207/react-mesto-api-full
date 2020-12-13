@@ -8,6 +8,7 @@ const cardsRouter = require("./routes/cards");
 const usersRouter = require("./routes/users");
 const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
+const NotFoundError = require("./errors/NotFoundError");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,7 +28,15 @@ app.use(auth);
 app.use("/cards", cardsRouter);
 app.use("/users", usersRouter);
 app.use("/*", (req, res) => {
-  res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
+  // res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
+  throw new NotFoundError("Запрашиваемый ресурс не найден");
+});
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500 ? "На сервере произошла ошибка" : message,
+  });
 });
 
 mongoose.connect("mongodb://localhost:27017/mestodb", {
