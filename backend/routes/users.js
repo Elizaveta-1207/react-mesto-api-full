@@ -35,7 +35,7 @@ const validateUserAvatar = celebrate({
 });
 
 usersRouter.get("/", getUsers);
-usersRouter.get("/me", getUser);
+usersRouter.get("/me", validateUserId, getUser);
 usersRouter.get("/:_id", validateUserId, getUserById);
 
 // usersRouter.get("/:_id", getUser);
