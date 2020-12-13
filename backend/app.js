@@ -10,6 +10,7 @@ const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
 const NotFoundError = require("./errors/NotFoundError");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const { errors } = require("celebrate");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
