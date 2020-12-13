@@ -10,34 +10,30 @@ const {
   dislikeCard,
 } = require("../controllers/cards");
 
+const validateCardId = celebrate({
+  params: Joi.object().keys({
+    _id: Joi.string().alphanum().length(24).hex(),
+  }),
+});
+
+const validateCard = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    link: Joi.string()
+      .required()
+      .custom((url) => {
+        if (!validator.isURL(url)) {
+          throw new CelebrateError("Неверный URL");
+        }
+        return url;
+      }),
+  }),
+});
+
 cardsRouter.get("/", getCards);
-cardsRouter.post(
-  "/",
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-      link: Joi.string()
-        .required()
-        .custom((url) => {
-          if (!validator.isURL(url)) {
-            throw new CelebrateError("Неверный URL");
-          }
-          return url;
-        }),
-    }),
-  }),
-  createCard
-);
-cardsRouter.delete(
-  "/:_id",
-  celebrate({
-    params: Joi.object().keys({
-      _id: Joi.string().alphanum().length(24).hex(),
-    }),
-  }),
-  deleteCard
-);
-cardsRouter.put("/:_id/likes", likeCard);
-cardsRouter.delete("/:_id/likes", dislikeCard);
+cardsRouter.post("/", validateCard, createCard);
+cardsRouter.delete("/:_id", validateCardId, deleteCard);
+cardsRouter.put("/:_id/likes", validateCardId, likeCard);
+cardsRouter.delete("/:_id/likes", validateCardId, dislikeCard);
 
 module.exports = cardsRouter;
