@@ -9,8 +9,13 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     setName(e.target.value);
   }
 
+  // function handleLinkChange(e) {
+  //   setLink(e.target.value);
+  // }
   function handleLinkChange(e) {
-    setLink(e.target.value);
+    e.target.name === "name"
+      ? setName(e.target.value)
+      : setLink(e.target.value);
   }
 
   function handleSubmit(e) {

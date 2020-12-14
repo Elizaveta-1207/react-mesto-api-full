@@ -2,7 +2,8 @@
 /* eslint-disable prefer-promise-reject-errors */
 export const BASE_URL = "https://auth.nomoreparties.co";
 
-const checkResponse = (res) => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+const checkResponse = (res) =>
+  res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 
 export const register = (email, password) =>
   fetch(`${BASE_URL}/signup`, {
@@ -22,7 +23,14 @@ export const authorize = (email, password) =>
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then(checkResponse);
+  })
+    .then(checkResponse)
+    .then((data) => {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        return data;
+      }
+    });
 
 export const getContent = (token) =>
   fetch(`${BASE_URL}/users/me`, {
@@ -32,4 +40,6 @@ export const getContent = (token) =>
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  })
+    .then(checkResponse)
+    .then((data) => data);

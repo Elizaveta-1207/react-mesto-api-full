@@ -21,6 +21,7 @@ class Api {
       method: "GET",
       headers: {
         authorization: this._authorization,
+        "Content-type": `${this._contentType}`,
       },
     }).then(handleOriginalResponse);
   }
@@ -64,6 +65,7 @@ class Api {
       method: "GET",
       headers: {
         authorization: this._authorization,
+        "Content-type": `${this._contentType}`,
       },
     }).then(handleOriginalResponse);
   }

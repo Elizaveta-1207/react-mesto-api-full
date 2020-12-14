@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema({
     // required: true,
     validate: {
       validator(v) {
-        return regex.test(v);
+        // return regex.test(v);
+        return validator.isURL(v);
       },
       message: "Неверная ссылка!",
     },
