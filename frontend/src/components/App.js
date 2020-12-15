@@ -21,9 +21,13 @@ import failLogo from "../images/failure.png";
 import * as auth from "../utils/auth";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(
+    false
+  );
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(
+    false
+  );
   const [selectedCard, setSelectedCard] = React.useState({ isOpen: false });
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -126,7 +130,7 @@ function App() {
         name: item.name,
         owner: item.owner,
         likes: item.likes,
-      })),
+      }))
     );
   }
 
@@ -157,12 +161,18 @@ function App() {
       .then((data) => {
         history.push("/sign-in");
         console.log(data);
-        setDataInfoTool({ title: "Вы успешно зарегистрировались!", icon: successLogo });
+        setDataInfoTool({
+          title: "Вы успешно зарегистрировались!",
+          icon: successLogo,
+        });
         handleInfoTooltipOpen();
       })
       .catch((err) => {
         console.error(err);
-        setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: failLogo });
+        setDataInfoTool({
+          title: "Что-то пошло не так! Попробуйте ещё раз.",
+          icon: failLogo,
+        });
         handleInfoTooltipOpen();
       });
   }
@@ -175,10 +185,15 @@ function App() {
         auth
           .getContent(data.token)
           .then((res) => {
-            setUserData(res.data.email);
+            // console.log(res);
+            // setUserData(res.data.email);
+            setUserData(res.email);
           })
           .catch((err) => {
-            setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: failLogo });
+            setDataInfoTool({
+              title: "Что-то пошло не так! Попробуйте ещё раз.",
+              icon: failLogo,
+            });
             console.error(err);
             handleInfoTooltipOpen();
           });
@@ -188,7 +203,10 @@ function App() {
         history.push("/");
       })
       .catch((err) => {
-        setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: failLogo });
+        setDataInfoTool({
+          title: "Что-то пошло не так! Попробуйте ещё раз.",
+          icon: failLogo,
+        });
         console.error(err);
         handleInfoTooltipOpen();
       });
@@ -202,10 +220,14 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            setUserData(res.data.email);
+            // setUserData(res.data.email);
+            setUserData(res.email);
             history.push("/");
           } else {
-            setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: failLogo });
+            setDataInfoTool({
+              title: "Что-то пошло не так! Попробуйте ещё раз.",
+              icon: failLogo,
+            });
             handleInfoTooltipOpen();
           }
         })

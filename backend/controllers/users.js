@@ -62,27 +62,38 @@ module.exports.getUserById = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
-  bcrypt
-    .hash(password.toString(), 10)
-    .then((hash) => User.create({ name, about, avatar, email, password: hash }))
-    .then((newUser) => {
-      if (!newUser) {
-        throw new NotFoundError("Неправильно переданы данные");
-      } else {
-        res.send(newUser);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      if (err.name === "ValidationError") {
-        next(
-          new BadRequestError("Ошибка валидации. Введены некорректные данные")
-        );
-      } else if (err.code === 11000) {
-        next(new UniqueError("Данный email уже зарегистрирован"));
-      }
-      next(err);
-    });
+  // console.log(req.body.password);
+  // let p = req.body.password;
+  // console.log(p.length);
+  if (req.body.password.length < 8) {
+    throw new BadRequestError(
+      "Ошибка валидации. Пароль должен состоять из 8 или более символов"
+    );
+  } else {
+    bcrypt
+      .hash(password.toString(), 10)
+      .then((hash) =>
+        User.create({ name, about, avatar, email, password: hash })
+      )
+      .then((newUser) => {
+        if (!newUser) {
+          throw new NotFoundError("Неправильно переданы данные");
+        } else {
+          res.send(newUser);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.name === "ValidationError") {
+          next(
+            new BadRequestError("Ошибка валидации. Введены некорректные данные")
+          );
+        } else if (err.code === 11000) {
+          next(new UniqueError("Данный email уже зарегистрирован"));
+        }
+        next(err);
+      });
+  }
 };
 
 module.exports.updateUser = (req, res, next) => {
