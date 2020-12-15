@@ -11,7 +11,7 @@ const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
 const NotFoundError = require("./errors/NotFoundError");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { errors, celebrate, Joi } = require("celebrate");
+const { errors, celebrate, Joi, CelebrateError } = require("celebrate");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -37,7 +37,25 @@ app.get("/crash-test", () => {
 });
 
 app.post("/signin", validateUser, login);
-app.post("/signup", validateUser, createUser);
+app.post(
+  "/signup",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string()
+        .required()
+        .min(8)
+        .custom((pass) => {
+          const regex = /^\S*$/;
+          if (!regex.test(pass)) {
+            throw new CelebrateError("Неверно введенный пароль");
+          }
+          return pass;
+        }),
+    }),
+  }),
+  createUser
+);
 
 app.use(auth);
 
