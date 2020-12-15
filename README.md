@@ -4,10 +4,10 @@
 ---
 
 ### Сайт:
-### https://timonina.students.nomoredomains.monster/sign-in
+### https://timonina.students.nomoredomains.monster
 
 ### REST API:
-### https://api.timonina.students.nomoredomains.monster/sign-in
+### https://api.timonina.students.nomoredomains.monster
 
 ### Публичный IP:
 ### 84.201.176.185
