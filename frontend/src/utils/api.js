@@ -20,7 +20,8 @@ class Api {
     return fetch(`${this._token}/cards`, {
       method: "GET",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-type": `${this._contentType}`,
       },
     }).then(handleOriginalResponse);
@@ -30,7 +31,8 @@ class Api {
     return fetch(`${this._token}/cards`, {
       method: "POST",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": this._contentType,
       },
       body: JSON.stringify({
@@ -44,7 +46,8 @@ class Api {
     return fetch(`${this._token}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": this._contentType,
       },
     }).then(handleOriginalResponse);
@@ -54,7 +57,8 @@ class Api {
     return fetch(`${this._token}/cards/likes/${cardId}`, {
       method: isLiked ? "PUT" : "DELETE",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": this._contentType,
       },
     }).then(handleOriginalResponse);
@@ -64,7 +68,8 @@ class Api {
     return fetch(`${this._token}/users/me`, {
       method: "GET",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-type": `${this._contentType}`,
       },
     }).then(handleOriginalResponse);
@@ -74,7 +79,8 @@ class Api {
     return fetch(`${this._token}/users/me`, {
       method: "PATCH",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": this._contentType,
       },
       body: JSON.stringify({
@@ -88,7 +94,8 @@ class Api {
     return fetch(`${this._token}/users/me/avatar`, {
       method: "PATCH",
       headers: {
-        authorization: this._authorization,
+        // authorization: this._authorization,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": this._contentType,
       },
       body: JSON.stringify({
@@ -105,7 +112,7 @@ export const api = new Api({
   baseUrl: "http://localhost:3000",
   headers: {
     // authorization: "36046fe7-1e8e-4a22-8e60-7f2eb2d5b2d8",
-    authorization: `Bearer ${localStorage.getItem("token")}`,
+    // authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-type": "application/json",
   },
 });

@@ -162,7 +162,7 @@ function App() {
       .register(email, password)
       .then((data) => {
         history.push("/sign-in");
-        console.log(data);
+        // console.log(data);
         setDataInfoTool({
           title: "Вы успешно зарегистрировались!",
           icon: successLogo,
@@ -180,28 +180,10 @@ function App() {
   }
 
   function handleLogin(email, password) {
-    console.log(email, password);
+    // console.log(email, password);
     auth
       .authorize(email, password)
       .then((data) => {
-        //------------------------------------
-        // auth
-        //   .getContent(data.token)
-        //   .then((res) => {
-        //     // console.log(res);
-        //     // setUserData(res.data.email);
-        //     setUserData(res.email);
-        //   })
-        //   .catch((err) => {
-        //     setDataInfoTool({
-        //       title: "Что-то пошло не так! Попробуйте ещё раз.",
-        //       icon: failLogo,
-        //     });
-        //     console.error(err);
-        //     handleInfoTooltipOpen();
-        //   });
-        //------------------------------------
-        console.log(data.token);
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
         history.push("/");
@@ -215,29 +197,6 @@ function App() {
         handleInfoTooltipOpen();
       });
   }
-
-  React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log(token);
-    if (loggedIn) {
-      auth
-        .getContent(token)
-        .then((res) => {
-          // console.log(res);
-          // setUserData(res.data.email);
-          setUserData(res.email);
-          setLoggedIn(true);
-        })
-        .catch((err) => {
-          setDataInfoTool({
-            title: "Что-то пошло не так! Попробуйте ещё раз.",
-            icon: failLogo,
-          });
-          console.error(err);
-          handleInfoTooltipOpen();
-        });
-    }
-  }, [loggedIn]);
 
   function tokenCheck() {
     const token = localStorage.getItem("token");

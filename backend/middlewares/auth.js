@@ -1,11 +1,11 @@
+/* eslint-disable consistent-return */
+/* eslint-disable comma-dangle */
 const jwt = require("jsonwebtoken");
 const UnauthError = require("../errors/UnauthError");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-const extractBearerToken = (header) => {
-  return header.replace("Bearer ", "");
-};
+const extractBearerToken = (header) => header.replace("Bearer ", "");
 
 // const handleAuthError = (res) => {
 //   res.status(401).send({ message: "Необходимо авторизироваться" });
@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(
       token,
-      //временно!!!
+      // временно!!!
       // "super-strong-secret"
       `${NODE_ENV === "production" ? JWT_SECRET : "dev-secret"}`
     );

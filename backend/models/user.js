@@ -1,12 +1,13 @@
+/* eslint-disable func-names */
 /* eslint-disable no-useless-escape */
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-4;
+
 const uniqueValidator = require("mongoose-unique-validator");
 const UnauthError = require("../errors/UnauthError");
 
-const regex = /https?:\/\/([\/\w.-]+)/;
+// const regex = /https?:\/\/([\/\w.-]+)/;
 
 const userSchema = new mongoose.Schema({
   name: {

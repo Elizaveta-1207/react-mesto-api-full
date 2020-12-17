@@ -20,11 +20,7 @@ function Card({
     owner,
     likes,
   };
-  console.log(currentUser._id);
-  console.log(card.owner);
-  // console.log(card.owner === currentUser._id);
   const isOwn = card.owner === currentUser._id;
-  console.log(isOwn);
 
   const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
