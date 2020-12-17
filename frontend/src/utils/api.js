@@ -100,9 +100,12 @@ class Api {
 
 // экземпляра класса Api
 export const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-15",
+  // baseUrl: "https://mesto.nomoreparties.co/v1/cohort-15",
+  // baseUrl: "http://api.timonina.students.nomoredomains.monster",
+  baseUrl: "http://localhost:3000",
   headers: {
-    authorization: "36046fe7-1e8e-4a22-8e60-7f2eb2d5b2d8",
+    // authorization: "36046fe7-1e8e-4a22-8e60-7f2eb2d5b2d8",
+    authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-type": "application/json",
   },
 });

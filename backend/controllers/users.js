@@ -79,7 +79,12 @@ module.exports.createUser = (req, res, next) => {
         if (!newUser) {
           throw new NotFoundError("Неправильно переданы данные");
         } else {
-          res.send(newUser);
+          res.send({
+            name: newUser.name,
+            about: newUser.about,
+            avatar: newUser.avatar,
+            email: newUser.email,
+          });
         }
       })
       .catch((err) => {
@@ -100,11 +105,7 @@ module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
     .then((user) => {
-      if (user) {
-        throw new NotFoundError("Нет пользователя с таким id");
-      } else {
-        res.send(user);
-      }
+      res.send(user);
     })
     .catch(next);
 };
