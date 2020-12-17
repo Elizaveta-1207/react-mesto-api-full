@@ -145,15 +145,17 @@ function App() {
   }
 
   React.useEffect(() => {
-    const promises = [api.getUserInfo(), api.getInitialCards()];
+    if (loggedIn) {
+      const promises = [api.getUserInfo(), api.getInitialCards()];
 
-    Promise.all(promises)
-      .then((results) => {
-        setCurrentUser(results[0]);
-        setupCards(results[1]);
-      })
-      .catch((err) => console.log(`Error ${err}`));
-  }, []);
+      Promise.all(promises)
+        .then((results) => {
+          setCurrentUser(results[0]);
+          setupCards(results[1]);
+        })
+        .catch((err) => console.log(`Error ${err}`));
+    }
+  }, [loggedIn]);
 
   function handleRegister(email, password) {
     auth
@@ -182,22 +184,24 @@ function App() {
     auth
       .authorize(email, password)
       .then((data) => {
-        auth
-          .getContent(data.token)
-          .then((res) => {
-            // console.log(res);
-            // setUserData(res.data.email);
-            setUserData(res.email);
-          })
-          .catch((err) => {
-            setDataInfoTool({
-              title: "Что-то пошло не так! Попробуйте ещё раз.",
-              icon: failLogo,
-            });
-            console.error(err);
-            handleInfoTooltipOpen();
-          });
-
+        //------------------------------------
+        // auth
+        //   .getContent(data.token)
+        //   .then((res) => {
+        //     // console.log(res);
+        //     // setUserData(res.data.email);
+        //     setUserData(res.email);
+        //   })
+        //   .catch((err) => {
+        //     setDataInfoTool({
+        //       title: "Что-то пошло не так! Попробуйте ещё раз.",
+        //       icon: failLogo,
+        //     });
+        //     console.error(err);
+        //     handleInfoTooltipOpen();
+        //   });
+        //------------------------------------
+        console.log(data.token);
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
         history.push("/");
@@ -211,6 +215,29 @@ function App() {
         handleInfoTooltipOpen();
       });
   }
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (loggedIn) {
+      auth
+        .getContent(token)
+        .then((res) => {
+          // console.log(res);
+          // setUserData(res.data.email);
+          setUserData(res.email);
+          setLoggedIn(true);
+        })
+        .catch((err) => {
+          setDataInfoTool({
+            title: "Что-то пошло не так! Попробуйте ещё раз.",
+            icon: failLogo,
+          });
+          console.error(err);
+          handleInfoTooltipOpen();
+        });
+    }
+  }, [loggedIn]);
 
   function tokenCheck() {
     const token = localStorage.getItem("token");
