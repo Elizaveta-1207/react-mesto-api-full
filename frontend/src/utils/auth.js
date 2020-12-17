@@ -1,12 +1,8 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable prefer-promise-reject-errors */
 // export const BASE_URL = "https://auth.nomoreparties.co";
-// export const BASE_URL = "https://api.timonina.students.nomoredomains.monster";
-export const BASE_URL = "http://localhost:3000";
-// export const BASE_URL = `${
-//   "https://api.timonina.students.nomoredomains.monster" ||
-//   "http://localhost:3000"
-// } `;
+export const BASE_URL = "https://api.timonina.students.nomoredomains.monster";
+// export const BASE_URL = "http://localhost:3000";
 
 const checkResponse = (res) =>
   res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
