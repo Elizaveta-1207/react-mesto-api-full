@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-unused-vars */
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -5,21 +7,38 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 
+const { errors, celebrate, Joi, CelebrateError } = require("celebrate");
+const validator = require("validator");
+
 const cardsRouter = require("./routes/cards");
 const usersRouter = require("./routes/users");
 const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
 const NotFoundError = require("./errors/NotFoundError");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { errors, celebrate, Joi } = require("celebrate");
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
-const validateUser = celebrate({
+const validateUserLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
+  }),
+});
+
+const validateUserSignup = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().custom((url) => {
+      if (!validator.isURL(url)) {
+        throw new CelebrateError("Неверный URL");
+      }
+      return url;
+    }),
   }),
 });
 
@@ -36,8 +55,8 @@ app.get("/crash-test", () => {
   }, 0);
 });
 
-app.post("/signin", validateUser, login);
-app.post("/signup", validateUser, createUser);
+app.post("/signin", validateUserLogin, login);
+app.post("/signup", validateUserSignup, createUser);
 // app.post("/signup", createUser);
 app.use(auth);
 

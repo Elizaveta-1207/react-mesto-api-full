@@ -1,9 +1,9 @@
 /* eslint-disable function-paren-newline */
 /* eslint-disable comma-dangle */
 /* eslint-disable implicit-arrow-linebreak */
-const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 const NotFoundError = require("../errors/NotFoundError");
 const BadRequestError = require("../errors/BadRequestError");
 const UnauthError = require("../errors/UnauthError");
@@ -61,7 +61,9 @@ module.exports.getUserById = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const { name, about, avatar, email, password } = req.body;
+  const {
+    name, about, avatar, email, password
+  } = req.body;
   // console.log(req.body.password);
   // let p = req.body.password;
   // console.log(p.length);
@@ -73,7 +75,9 @@ module.exports.createUser = (req, res, next) => {
     bcrypt
       .hash(password.toString(), 10)
       .then((hash) =>
-        User.create({ name, about, avatar, email, password: hash })
+        User.create({
+          name, about, avatar, email, password: hash
+        })
       )
       .then((newUser) => {
         if (!newUser) {
@@ -140,7 +144,7 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
         { expiresIn: "7d" }
       );
-      //что не так!!?
+      // что не так!!?
       res.send({ token });
     })
     .catch(next);
