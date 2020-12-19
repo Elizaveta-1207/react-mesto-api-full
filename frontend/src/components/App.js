@@ -1,3 +1,6 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 /* eslint-disable object-curly-newline */
 import React from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
