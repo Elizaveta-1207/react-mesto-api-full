@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -62,7 +63,7 @@ function Card({
       />
       <div className="element__description">
         <h2 className="element__title">{name}</h2>
-        <div className="element__likes">
+        {/* <div className="element__likes">
           <button
             aria-label="Лайк"
             type="button"
@@ -70,7 +71,7 @@ function Card({
             onClick={handleLikeClick}
           ></button>
           <p className="element__like-amount">{likes.length}</p>
-        </div>
+        </div> */}
       </div>
     </li>
   );

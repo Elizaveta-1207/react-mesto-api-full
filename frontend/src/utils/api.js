@@ -54,7 +54,7 @@ class Api {
   }
 
   changeLikeCardStatus(cardId, isLiked) {
-    return fetch(`${this._token}/cards/likes/${cardId}`, {
+    return fetch(`${this._token}/cards/${cardId}/likes`, {
       method: isLiked ? "PUT" : "DELETE",
       headers: {
         // authorization: this._authorization,
