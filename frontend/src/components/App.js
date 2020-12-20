@@ -183,10 +183,11 @@ function App() {
   }
 
   function handleLogin(email, password) {
-    // console.log(email, password);
+    console.log(email, password);
     auth
       .authorize(email, password)
       .then((data) => {
+        // console.log(data);
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
         history.push("/");
@@ -210,6 +211,7 @@ function App() {
           if (res) {
             setLoggedIn(true);
             // setUserData(res.data.email);
+            console.log(res);
             setUserData(res.email);
             history.push("/");
           } else {
